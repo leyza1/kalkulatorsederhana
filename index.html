@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalkulator Pink Soft - Lesa</title>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #ffe0ec, #ffd1e8, #ffc6dc);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        color: #333;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(18px);
+        border-radius: 25px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        padding: 35px;
+        width: 360px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        animation: fadeIn 1s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      h1 {
+        font-size: 1.9em;
+        background: linear-gradient(90deg, #ff6f91, #ff8fab);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+
+      .display {
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 15px;
+        padding: 15px;
+        font-size: 2em;
+        margin-bottom: 20px;
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.25);
+        text-align: right;
+        color: #222;
+        font-weight: 600;
+      }
+
+      input {
+        width: 45%;
+        padding: 10px;
+        font-size: 1em;
+        border: none;
+        border-radius: 12px;
+        margin: 10px 5px;
+        text-align: center;
+        outline: none;
+        background: rgba(255, 255, 255, 0.7);
+        color: #333;
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+
+      input::placeholder {
+        color: #777;
+      }
+
+      input:focus {
+        background: rgba(255, 255, 255, 0.9);
+        transform: scale(1.03);
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      button {
+        background: linear-gradient(135deg, #ff8fb1, #ff6f91);
+        border: none;
+        border-radius: 15px;
+        padding: 15px;
+        font-size: 1.2em;
+        color: white;
+        cursor: pointer;
+        transition: all 0.25s;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(255, 128, 167, 0.4);
+      }
+
+      button:hover {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, #ff5f8a, #ff3d68);
+        box-shadow: 0 0 15px rgba(255, 128, 167, 0.6);
+      }
+
+      button.reset {
+        grid-column: span 4;
+        background: linear-gradient(135deg, #ff7e9b, #ff477e);
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      footer {
+        margin-top: 15px;
+        font-size: 0.85em;
+        opacity: 0.9;
+        letter-spacing: 0.5px;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Kalkulator Sederhana</h1>
+
+      <div id="display" class="display">0</div>
+
+      <div class="inputs">
+        <input type="number" id="angka1" placeholder="Angka 1" />
+        <input type="number" id="angka2" placeholder="Angka 2" />
+      </div>
+
+      <div class="buttons">
+        <button onclick="hitung('+')">+</button>
+        <button onclick="hitung('-')">−</button>
+        <button onclick="hitung('*')">×</button>
+        <button onclick="hitung('/')">÷</button>
+        <button onclick="hitung('%')">%</button>
+        <button onclick="hitung('^')">^</button>
+        <button class="reset" onclick="resetKalkulator()">🔄 RESET</button>
+      </div>
+
+      <footer>by Leyza 💗 | Pink Soft Edition (Clear Text)</footer>
+    </div>
+
+    <script>
+      function hitung(operator) {
+        const a = parseFloat(document.getElementById("angka1").value);
+        const b = parseFloat(document.getElementById("angka2").value);
+        const display = document.getElementById("display");
+        let hasil;
+
+        if (isNaN(a) || isNaN(b)) {
+          Swal.fire({
+            icon: "warning",
+            title: "⚠️ Angka belum lengkap!",
+            text: "Masukkan kedua angka sebelum menghitung 💕",
+            confirmButtonColor: "#ff6f91",
+          });
+          return;
+        }
+
+        switch (operator) {
+          case "+":
+            hasil = a + b;
+            break;
+          case "-":
+            hasil = a - b;
+            break;
+          case "*":
+            hasil = a * b;
+            break;
+          case "/":
+            if (b === 0) {
+              Swal.fire({
+                icon: "error",
+                title: "🚫 Tidak bisa dibagi nol!",
+                text: "Masukkan angka kedua selain 0 ya.",
+                confirmButtonColor: "#ff3d68",
+              });
+              return;
+            }
+            hasil = a / b;
+            break;
+          case "%":
+            hasil = a % b;
+            break;
+          case "^":
+            hasil = Math.pow(a, b);
+            break;
+        }
+
+        display.textContent = hasil;
+
+        Swal.fire({
+          icon: "success",
+          title: "💖 Hasil Perhitungan",
+          html: `<b>${a}</b> ${operator} <b>${b}</b> = <b>${hasil}</b>`,
+          confirmButtonColor: "#ff7e9b",
+        });
+      }
+
+      function resetKalkulator() {
+        document.getElementById("angka1").value = "";
+        document.getElementById("angka2").value = "";
+        document.getElementById("display").textContent = "0";
+
+        Swal.fire({
+          icon: "info",
+          title: "✨ Direset!",
+          text: "Kalkulator sudah bersih lagi 💕",
+          confirmButtonColor: "#ff6f91",
+        });
+      }
+    </script>
+  </body>
+</html>
